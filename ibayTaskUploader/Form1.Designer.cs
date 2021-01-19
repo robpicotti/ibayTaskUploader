@@ -28,14 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.cmdUpload = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.cmdUpload = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -73,6 +78,8 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.label2);
+            this.panel2.Controls.Add(this.progressBar1);
             this.panel2.Controls.Add(this.cmdUpload);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.button1);
@@ -81,6 +88,35 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1401, 47);
             this.panel2.TabIndex = 0;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(1309, 17);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(23, 14);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "0%";
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(309, 14);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(994, 23);
+            this.progressBar1.TabIndex = 3;
+            // 
+            // cmdUpload
+            // 
+            this.cmdUpload.BackColor = System.Drawing.Color.Lime;
+            this.cmdUpload.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmdUpload.Location = new System.Drawing.Point(139, 12);
+            this.cmdUpload.Name = "cmdUpload";
+            this.cmdUpload.Size = new System.Drawing.Size(139, 23);
+            this.cmdUpload.TabIndex = 2;
+            this.cmdUpload.Text = "Upload to database";
+            this.cmdUpload.UseVisualStyleBackColor = false;
+            this.cmdUpload.Click += new System.EventHandler(this.cmdUpload_Click);
             // 
             // label1
             // 
@@ -101,17 +137,9 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // cmdUpload
+            // timer2
             // 
-            this.cmdUpload.BackColor = System.Drawing.Color.Lime;
-            this.cmdUpload.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdUpload.Location = new System.Drawing.Point(139, 12);
-            this.cmdUpload.Name = "cmdUpload";
-            this.cmdUpload.Size = new System.Drawing.Size(139, 23);
-            this.cmdUpload.TabIndex = 2;
-            this.cmdUpload.Text = "Upload to database";
-            this.cmdUpload.UseVisualStyleBackColor = false;
-            this.cmdUpload.Click += new System.EventHandler(this.cmdUpload_Click);
+            this.timer2.Interval = 5000;
             // 
             // Form1
             // 
@@ -140,6 +168,10 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button cmdUpload;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer timer2;
     }
 }
 

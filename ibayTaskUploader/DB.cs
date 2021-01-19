@@ -133,37 +133,33 @@ namespace ibayTaskUploader
 				string de = "";
 				using (StreamReader sr = new StreamReader(_file))
 				{
-					string[] headers = sr.ReadLine().Split(new char[1]
-					{
-				','
-					});
+					//char[] delimiters = { '\",' + '\"' };
+					string[] headers = sr.ReadLine().Split(new char[1]{','});
 					if (headers[0].ToString() == "")
-					{
-						headers = sr.ReadLine().Split(new char[1]
-						{
-					','
-						});
-					}
+					{headers = sr.ReadLine().Split(new char[1]{','});}
 					string[] array = headers;
 					foreach (string header in array)
 					{
-						dt.Columns.Add(header);
+						string x = header.Replace("\"", "");
+						dt.Columns.Add(x);
 					}
 					while (!sr.EndOfStream)
 					{
 						string srows = sr.ReadLine();
+						//srows = srows.Replace("\",\"", ",");
+						string splitter = "\",\"";
 						if (srows.Replace(",", "") == "")
 						{
 							return dt;
 						}
-						string[] rows = Regex.Split(srows, ",");
+						string[] rows = Regex.Split(srows,splitter);
 						DataRow dr = dt.NewRow();
 						for (int i = 0; i < headers.Length; i++)
 						{
 							errorRow = rows[i].ToString();
 							de = rows[i].ToString();
 							errorCol = rows[i].ToString();
-							dr[i] = rows[i].ToString();
+							dr[i] = rows[i].ToString().Replace("\"","");
 						}
 						dt.Rows.Add(dr);
 					}
@@ -224,5 +220,7 @@ namespace ibayTaskUploader
 			}
 			return dt;
 		}
+
+
 	}
 }
