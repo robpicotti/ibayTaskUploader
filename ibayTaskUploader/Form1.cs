@@ -16,11 +16,13 @@ namespace ibayTaskUploader
         DB db = new DB();
         Task objTask = new Task();
         DataTable table = new DataTable();
+        DataTable _allJobs = new DataTable();
         int _rows = 0;
         public Form1()
         {
             InitializeComponent();
-            //label1.Text = "Please remember to remove all commas from task descriptions, opportunity descriptions, etc. And also no RETURN keys to make 2 lines for the former";
+            _allJobs = db.getSprocResults("get_alljobs");
+            dgvAll.DataSource = _allJobs;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -50,6 +52,7 @@ namespace ibayTaskUploader
         {
             try
             {
+                Cursor = Cursors.WaitCursor;
                 string err = "";
                 Task errTask = new Task();
                 objTask = objTask.parseTasks(table);
@@ -90,7 +93,7 @@ namespace ibayTaskUploader
                 {
                     float tick = complete / _rows * 100;
                     progressBar1.Value = Convert.ToInt32(tick);
-                    label2.Text = tick.ToString().Substring(0,5) +  "%";
+                    label2.Text = tick.ToString().Substring(0,5) +  "% complete";
                     label2.Refresh();
                 }
             }
@@ -131,6 +134,95 @@ namespace ibayTaskUploader
 
 
             return errorTask;
+        }
+
+        private void cmdAll_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                dgvAll.DataSource = db.getSprocResults("get_alljobs");
+                Cursor = Cursors.Default;
+            }
+            catch(Exception ex)
+            {
+                Cursor = Cursors.Default;
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void panel5_MouseClick(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void dgvAll_MouseClick(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                int currentMouseOverColumn = dgvAll.HitTest(e.X, e.Y).ColumnIndex;
+                int irow = dgvAll.HitTest(e.X, e.Y).RowIndex;
+                if(irow < 0) { return; }
+                string opportunity = "";
+                if (dgvAll[1, irow].Value != null)
+                {
+                    opportunity = dgvAll[1, irow].Value.ToString();
+                    string[,] arrParams = { {"@project",opportunity } };
+                    dgvOppDetail.DataSource = db.getSprocResults("p_selectOpportunities",arrParams);
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void txtClient_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                search_jobs();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void search_jobs()
+        {
+            try
+            {
+                string client = txtClient.Text;
+                string opp = txtOpp.Text;
+                string proj_type = txtProj.Text;
+                string work_type = txtWork.Text;
+                DataView dv = new DataView(_allJobs);
+                dv.RowFilter = string.Format("client LIKE '%{0}%' AND opportunity LIKE '%{1}%' and project_type LIKE '%{2}%' AND work_type LIKE '%{3}%'",
+                    client + ((client == string.Empty) ? string.Empty : "%"),
+                    opp + ((opp == string.Empty) ? string.Empty : "%"),
+                    proj_type + ((proj_type == string.Empty) ? string.Empty : "%"),
+                    work_type + ((work_type == string.Empty) ? string.Empty : "%"));
+                dgvAll.DataSource = dv;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void txtOpp_TextChanged(object sender, EventArgs e)
+        {
+            search_jobs();
+        }
+
+        private void txtProj_TextChanged(object sender, EventArgs e)
+        {
+            search_jobs();
+        }
+
+        private void txtWork_TextChanged(object sender, EventArgs e)
+        {
+            search_jobs();
         }
     }
 }
