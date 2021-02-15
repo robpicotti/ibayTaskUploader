@@ -18,11 +18,13 @@ namespace ibayTaskUploader
         DataTable table = new DataTable();
         DataTable _allJobs = new DataTable();
         int _rows = 0;
+        private string _version = "2.0";
         public Form1()
         {
             InitializeComponent();
             _allJobs = db.getSprocResults("get_alljobs");
             dgvAll.DataSource = _allJobs;
+            this.Text = this.Text + " version: " + _version;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -79,7 +81,6 @@ namespace ibayTaskUploader
                 MessageBox.Show(ex.Message);
             }
         }
-
 
         private void updateProgress()
         {
