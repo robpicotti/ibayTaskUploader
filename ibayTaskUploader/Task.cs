@@ -42,7 +42,7 @@ namespace ibayTaskUploader
                 }
                 if(table.Rows[i][8]!=null)
                 {
-                    string bill = "";
+                    //string bill = "";
                     switch(table.Rows[i][8].ToString().ToUpper())
                     {
                         case "YES":
@@ -53,6 +53,23 @@ namespace ibayTaskUploader
                             break;
                     }
                 }
+                if(table.Rows[i][9] != null)
+                {
+                    switch (table.Rows[i][8].ToString().ToUpper())
+                    {
+                        case "COMPLETED":
+                            objTaskItem.isCompleted = 1;
+                            break;
+                        default:
+                            objTaskItem.isCompleted = 0;
+                            break;
+                    }
+                }
+                else
+                {
+                    objTaskItem.isCompleted = 0;
+                }
+                    
                 if (objTask.item ==null)
                 {
                     objTask.item = new List<TaskItem>();
@@ -73,7 +90,7 @@ namespace ibayTaskUploader
                         string create_date = item.createDate.ToString("yyyy-MM-dd");
                         string[,] arrParams = { { "@trackedBy", item.trackedBy }, { "@task", item.task }, { "@company",item.client},{ "@opportunity",item.opportunity},
                     { "@created_date",create_date},{"@dt",create_date },{ "@estimated_time",item.estimatedTime.ToString()},{ "@tracked_time",item.trackedTime.ToString()},
-                    { "@billable",item.isBillable.ToString()} };
+                    { "@billable",item.isBillable.ToString()} ,{"@is_completed",item.isCompleted.ToString() } };
                         bool bln = db.execSproc("p_uploadTasks", arrParams);
                         if (bln == false)
                         {
@@ -108,6 +125,7 @@ namespace ibayTaskUploader
             public float estimatedTime { get; set; }
             public float trackedTime { get; set; }
             public int isBillable { get; set; }
+            public int isCompleted { get; set; }
         }
 
     }

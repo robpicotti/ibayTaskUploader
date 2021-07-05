@@ -134,6 +134,7 @@ namespace ibayTaskUploader
 				using (StreamReader sr = new StreamReader(_file))
 				{
 					//char[] delimiters = { '\",' + '\"' };
+					
 					string[] headers = sr.ReadLine().Split(new char[1]{','});
 					if (headers[0].ToString() == "")
 					{headers = sr.ReadLine().Split(new char[1]{','});}
@@ -146,8 +147,8 @@ namespace ibayTaskUploader
 					while (!sr.EndOfStream)
 					{
 						string srows = sr.ReadLine();
-						//srows = srows.Replace("\",\"", ",");
-						string splitter = "\",\"";
+						//srows = srows.Replace(@"/", @"-");
+						string splitter =  "\",\"";//",";
 						if (srows.Replace(",", "") == "")
 						{
 							return dt;
